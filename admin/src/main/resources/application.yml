@@ -1,0 +1,48 @@
+server:
+  port: 8811
+
+spring:
+  application:
+    name: Admin-Server
+  profiles:
+    active: dev
+  datasource:
+    name: local
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    hibernate:
+      ddl-auto: none
+    generate-ddl: false
+
+mybatis:
+  mapper-locations: classpath*:/mapping/**/*.xml,/mapping.auth/*.xml
+  type-aliases-package: com.moonlit.kingserp.admin
+  configuration:
+    map-underscore-to-camel-case: true
+
+# 分页插件 PageHelper, 通用 Mapper
+mapper:
+  mappers: com.moonlit.kingserp.common.tkmapper.MyMapper
+  not-empty: true
+  identity: MYSQL
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+# hystrix
+feign:
+  hystrix:
+    enabled: false
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 5000
